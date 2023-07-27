@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import './screens/contact/contact.dart';
 import './screens/home/home.dart';
 import './screens/login/login.dart';
 import './screens/onboarding/onboarding.dart';
@@ -19,26 +18,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Chat App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        // useMaterial3: true,
       ),
       initialRoute: '/',
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/':
             return CupertinoPageRoute(
-                builder: (_) => OnboardingScreen(), settings: settings);
+                builder: (_) => const OnboardingScreen(), settings: settings);
           case '/login':
             return CupertinoPageRoute(
-                builder: (_) => LoginScreen(), settings: settings);
+                builder: (_) => const LoginScreen(), settings: settings);
 
           case '/register':
             return CupertinoPageRoute(
-                builder: (_) => RegisterScreen(), settings: settings);
+                builder: (_) => const RegisterScreen(), settings: settings);
           case '/home':
             return CupertinoPageRoute(
-                builder: (_) => HomeScreen(), settings: settings);
+                builder: (_) => const HomeScreen(), settings: settings);
           // case '/contact':
           //   return CupertinoPageRoute(
           //       builder: (_) => ContactScreen(
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
 
           default:
             return CupertinoPageRoute(
-                builder: (_) => OnboardingScreen(), settings: settings);
+                builder: (_) => const OnboardingScreen(), settings: settings);
         }
       },
     );

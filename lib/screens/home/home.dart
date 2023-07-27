@@ -4,7 +4,7 @@ import './home_controller.dart';
 import '../../widgets/user_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  static final String routeName = '/home';
+  static const String routeName = '/home';
 
   const HomeScreen({super.key});
 
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, snapshot) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'Users online',
                 style: TextStyle(
                   color: Colors.white,
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Material(
                   color: Colors.transparent,
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.exit_to_app,
                       color: Colors.white,
                     ),
@@ -56,15 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
             body: SafeArea(
                 child: ListView(
               children: [
-                ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(
-                        15,
-                      ),
-                      child: Container(child: userList(context)),
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(
+                    15,
+                  ),
+                  child: Container(child: userList(context)),
                 )
               ],
             )),
@@ -73,8 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget userList(BuildContext context) {
-    if (_homeController!.users.length == 0) {
-      return Material(
+    if (_homeController!.users.isEmpty) {
+      return const Material(
         child: Align(
           alignment: Alignment.center,
           child: Text('No user online'),
@@ -90,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             UserCard(
               user: user,
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
           ],

@@ -16,7 +16,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   void verifyUserLoggedInAndRedirect() async {
     String routeName = HomeScreen.routeName;
-    String token = await CustomSharedPreferences.get('token');
+    String? token = await CustomSharedPreferences.get('token');
     if (token == null) {
       routeName = LoginScreen.routeName;
     }

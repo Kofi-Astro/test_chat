@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import './user.dart';
 
 class UserWithToken {
@@ -12,7 +10,7 @@ class UserWithToken {
   });
 
   UserWithToken.fromJson(Map<String, dynamic> json) {
-    user = User.frojmJson(json['user']);
+    user = User.fromJson(json['user']);
     token = json['token'];
   }
 

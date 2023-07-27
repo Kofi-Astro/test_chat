@@ -16,7 +16,7 @@ class RegisterController {
     init();
   }
 
-  RegisterRepository _registerRepository = RegisterRepository();
+  final RegisterRepository _registerRepository = RegisterRepository();
   StreamController<String> streamController = StreamController();
 
   TextEditingController emailController = TextEditingController();
@@ -82,10 +82,10 @@ class RegisterController {
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Text('OK'));
+        child: const Text('OK'));
 
     AlertDialog alert = AlertDialog(
-      title: Text('Verification error'),
+      title: const Text('Verification error'),
       content: Text(message),
       actions: [okButton],
     );

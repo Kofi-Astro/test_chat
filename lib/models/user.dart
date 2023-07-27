@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class User {
   String? id;
   String? email;
@@ -15,7 +13,7 @@ class User {
     this.currentChatSocketId,
   });
 
-  User.frojmJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     email = json['email'];
     username = json['username'];

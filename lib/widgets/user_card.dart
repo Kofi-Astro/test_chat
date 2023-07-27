@@ -6,7 +6,7 @@ import '../screens/contact/contact.dart';
 class UserCard extends StatelessWidget {
   final User? user;
 
-  UserCard({
+  const UserCard({super.key, 
     required this.user,
   });
 

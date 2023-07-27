@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 
 class CustomHttpClient extends http.BaseClient {
-  http.Client _httpClient = new http.Client();
+  final http.Client _httpClient = http.Client();
 
   final Map<String, String> defaultHeaders = {
     "Content-Type": "application/json"

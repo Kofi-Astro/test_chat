@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import '../models/custom_error.dart';
 import '../models/user_with_token.dart';
@@ -27,7 +26,7 @@ class RegisterRepository {
       final UserWithToken user = UserWithToken.fromJson(loginResponse);
       return user;
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

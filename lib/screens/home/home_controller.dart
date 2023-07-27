@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../models/user.dart';
-import '../login/login.dart';
 import '../../utils/custom_shared_preferences.dart';
 import '../../utils/socket_controller.dart';
+import '../login/login.dart';
 
 class HomeController {
   final BuildContext context;
@@ -33,7 +33,7 @@ class HomeController {
 
   Future<User> getUserFromSharedPreferences() async {
     final savedUser = await CustomSharedPreferences.get('user');
-    User user = User.frojmJson(jsonDecode(savedUser));
+    User user = User.fromJson(jsonDecode(savedUser));
     return user;
   }
 
@@ -69,7 +69,8 @@ class HomeController {
 
     await CustomSharedPreferences.remove('user');
     await CustomSharedPreferences.remove('token');
-    // Navigator.of(context).pushNamedAndRemoveUntil(LoginScreen.routeName, (_) => false)
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(LoginScreen.routeName, (_) => false);
   }
 
   void notifyListeners() {

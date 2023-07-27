@@ -22,7 +22,7 @@ class ContactController {
 
   IO.Socket socket = SocketController.socket;
 
-  List<Message> _messages = [];
+  final List<Message> _messages = [];
   List<Message> get messages => _messages;
 
   void init() {

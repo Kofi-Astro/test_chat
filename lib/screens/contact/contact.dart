@@ -33,7 +33,7 @@ class _ContactScreenState extends State<ContactScreen> {
         stream: _contactController!.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
-            backgroundColor: const Color(0xFFEEEEEEEE),
+            backgroundColor: const Color(0xffeeeeeeee),
             appBar: AppBar(
                 title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -68,7 +68,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   color: Colors.transparent,
                   child: Padding(
                     padding: const EdgeInsets.all(5),
-                    child: Container(
+                    child: SizedBox(
                       height: 55,
                       child: Row(children: [
                         Expanded(
@@ -178,7 +178,7 @@ class _ContactScreenState extends State<ContactScreen> {
 
   Widget renderOnline() {
     if (_contactController!.userOnlineInMyChat) {
-      return Text(
+      return const Text(
         'online in your conversation',
         style: TextStyle(
             fontSize: 12,
@@ -186,7 +186,7 @@ class _ContactScreenState extends State<ContactScreen> {
             color: Colors.greenAccent),
       );
     }
-    return Container(
+    return const SizedBox(
       width: 0,
       height: 0,
     );

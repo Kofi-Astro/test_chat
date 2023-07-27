@@ -16,7 +16,7 @@ class LoginController {
     init();
   }
 
-  LoginRepository _loginRepository = LoginRepository();
+  final LoginRepository _loginRepository = LoginRepository();
   StreamController<String> streamController = StreamController();
 
   TextEditingController usernameController = TextEditingController();
@@ -54,6 +54,7 @@ class LoginController {
       await CustomSharedPreferences.setString(
           'user', loginResponse.user.toString());
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      // Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }
     _formSubmitting = false;
     notifyListeners();
@@ -81,13 +82,13 @@ class LoginController {
   showAlertDialog(String message) {
     Widget okButton = TextButton(
       onPressed: () {
-        Navigator.of(context).pop;
+        Navigator.pop(context);
       },
-      child: Text('OK'),
+      child: const Text('OK'),
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text('Verification error'),
+      title: const Text('Verification error'),
       content: Text(message),
       actions: [
         okButton,

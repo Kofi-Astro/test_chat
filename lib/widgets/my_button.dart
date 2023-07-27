@@ -5,7 +5,7 @@ class MyButton extends StatelessWidget {
   final Function() onTap;
   final bool disabled;
 
-  MyButton({
+  const MyButton({super.key, 
     required this.title,
     required this.onTap,
     this.disabled = false,
@@ -15,7 +15,7 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: disabled ? .4 : 1,
-      child: Container(
+      child: SizedBox(
         height: 45,
         child: Material(
           color: Theme.of(context).primaryColor,

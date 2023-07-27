@@ -4,7 +4,7 @@ import './login_controller.dart';
 import '../../widgets/my_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  static final String routeName = '/login';
+  static const String routeName = '/login';
   const LoginScreen({super.key});
 
   @override
@@ -80,6 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           _loginController!.submitForm();
                         },
                         obscureText: true,
+                      ),
+                      SizedBox(
+                        height: 60,
                       ),
                       MyButton(
                         title: _loginController!.formSubmitting
