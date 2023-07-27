@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './home_controller.dart';
-import '../../widgets/user_card.dart';
 import '../../widgets/chat_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -97,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       children: _homeController!.chats.map((chat) {
         if (chat.messages!.isEmpty) {
-          return Container(
+          return const SizedBox(
             height: 0,
             width: 0,
           );

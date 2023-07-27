@@ -1,16 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../models/custom_error.dart';
 import '../../models/user.dart';
 
 import '../../repositories/user_repository.dart';
-import '../login/login.dart';
-import '../../utils/custom_shared_preferences.dart';
-import '../../utils/socket_controller.dart';
 import '../../utils/state_control.dart';
 
 class AddChatController extends StateControl {
@@ -19,7 +13,7 @@ class AddChatController extends StateControl {
     init();
   }
 
-  UserRepository _userRepository = UserRepository();
+  final UserRepository _userRepository = UserRepository();
 
   bool _loading = true;
   bool get loading => _loading;
@@ -48,8 +42,4 @@ class AddChatController extends StateControl {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

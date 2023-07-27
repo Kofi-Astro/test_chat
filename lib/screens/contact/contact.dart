@@ -191,7 +191,7 @@ class _ContactScreenState extends State<ContactScreen> {
     //         color: Colors.greenAccent),
     //   );
     // }
-    return Container(
+    return const SizedBox(
       width: 0,
       height: 0,
     );

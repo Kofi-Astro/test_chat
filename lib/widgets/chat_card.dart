@@ -1,11 +1,8 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import '../models/chat.dart';
-import '../models/user.dart';
 import '../screens/contact/contact.dart';
-import '../utils/custom_shared_preferences.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat chat;

@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
 
           case '/add-chat':
             return CupertinoPageRoute(
-                builder: (_) => AddChatScreen(), settings: settings);
+                builder: (_) => const AddChatScreen(), settings: settings);
 
           default:
             return CupertinoPageRoute(

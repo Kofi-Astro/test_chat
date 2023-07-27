@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class RegisterController extends StateControl {
     init();
   }
 
-  RegisterRepository _registerRepository = RegisterRepository();
+  final RegisterRepository _registerRepository = RegisterRepository();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -29,6 +28,7 @@ class RegisterController extends StateControl {
   bool _fomrSubmitting = false;
   get formSubmitting => _fomrSubmitting;
 
+  @override
   void init() {
     usernameController.addListener(validateForm);
     emailController.addListener(validateForm);

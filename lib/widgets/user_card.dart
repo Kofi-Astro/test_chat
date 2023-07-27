@@ -57,13 +57,13 @@ class UserCard extends StatelessWidget {
                         '@${user!.email}',
                         style: const TextStyle(fontSize: 12),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Container(
                         width: double.infinity,
                         height: 1,
-                        color: Color(0xffdddddd),
+                        color: const Color(0xffdddddd),
                       )
                     ],
                   ),

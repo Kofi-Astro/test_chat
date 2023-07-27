@@ -7,6 +7,8 @@ import './add_chat_controller.dart';
 class AddChatScreen extends StatefulWidget {
   static const String routeName = '/add-chat';
 
+  const AddChatScreen({super.key});
+
   @override
   State<AddChatScreen> createState() => _AddChatScreenState();
 }

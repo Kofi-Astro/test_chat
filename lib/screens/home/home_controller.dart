@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../models/user.dart';
 import '../../utils/custom_shared_preferences.dart';
-import '../../utils/socket_controller.dart';
 import '../login/login.dart';
 import '../../models/chat.dart';
 import '../../models/custom_error.dart';
@@ -21,7 +19,7 @@ class HomeController extends StateControl {
     init();
   }
 
-  ChatRepository _chatRepository = ChatRepository();
+  final ChatRepository _chatRepository = ChatRepository();
 
   bool _error = false;
   bool get error => _error;
@@ -29,12 +27,13 @@ class HomeController extends StateControl {
   bool _loading = true;
   bool get loading => _loading;
 
-  List<User> _users = [];
+  final List<User> _users = [];
   List<User> get users => _users;
 
   List<Chat> _chats = [];
   List<Chat> get chats => _chats;
 
+  @override
   void init() {
     getChats();
   }
@@ -72,8 +71,4 @@ class HomeController extends StateControl {
     Navigator.of(context).pushNamed(AddChatScreen.routeName);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

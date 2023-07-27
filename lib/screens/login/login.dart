@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         obscureText: true,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 60,
                       ),
                       MyButton(

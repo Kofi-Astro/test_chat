@@ -10,10 +10,8 @@ class CustomHttpClient extends http.BaseClient {
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
-    final String token = await CustomSharedPreferences.get('token');
-    if (token != null) {
-      defaultHeaders['Authorization'] = "Bearer $token";
-    }
+    final String? token = await CustomSharedPreferences.get('token');
+    defaultHeaders['Authorization'] = "Bearer $token";
     request.headers.addAll(defaultHeaders);
     return _httpClient.send(request);
   }

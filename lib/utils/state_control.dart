@@ -7,14 +7,17 @@ class StateControl implements StateAbstractControl {
 
   StateControl() : streamController = StreamController();
 
+  @override
   void notifyListeners() {
     streamController.add('change');
   }
 
+  @override
   void init() {
     print('Initializing state');
   }
 
+  @override
   void dispose() {
     print('Disposing state');
     streamController.close();

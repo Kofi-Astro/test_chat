@@ -25,8 +25,8 @@ class Chat {
     id = json['_id'];
     lowerIdUser = User.fromJson(json['lowerId']);
     higherIdUser = User.fromJson(json['higherId']);
-    List<dynamic> _messages = json['messages'];
-    messages = _messages.map((message) => Message.fromJson(message)).toList();
+    List<dynamic> messages = json['messages'];
+    messages = messages.map((message) => Message.fromJson(message)).toList();
   }
 
   Future<Chat> formatChat() async {

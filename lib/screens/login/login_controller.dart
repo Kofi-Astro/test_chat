@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +26,7 @@ class LoginController extends StateControl {
   bool _formSubmitting = false;
   get formSubmitting => _formSubmitting;
 
+  @override
   void init() {
     usernameController.addListener(validateForm);
     passwordController.addListener(validateForm);
