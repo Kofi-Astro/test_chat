@@ -1,24 +1,25 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
 class User {
   String? id;
   String? email;
   String? username;
-  String? socketId;
-  String? currentChatSocketId;
+  String? token;
 
   User({
     required this.id,
     required this.email,
     required this.username,
-    this.socketId,
-    this.currentChatSocketId,
+    this.token,
   });
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     email = json['email'];
     username = json['username'];
-    socketId = json['socketId'];
-    currentChatSocketId = json['currentChatSocketId'];
+    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,13 +27,16 @@ class User {
       '_id': id,
       'email': email,
       'username': username,
-      'socketId': socketId,
-      'currentChatSocketId': currentChatSocketId,
+      'token': token,
     };
   }
 
   @override
   String toString() {
-    return "{'_id': '$id', 'email': '$email', 'username': '$username', 'socketId': '$socketId', 'currentChatSocketId':'$currentChatSocketId'}";
+    Map<String, dynamic>? userJson;
+    userJson!['_id'] = id;
+    userJson['email'] = email;
+    userJson['username'] = username;
+    return json.encode(userJson);
   }
 }

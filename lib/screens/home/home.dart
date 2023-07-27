@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './home_controller.dart';
 import '../../widgets/user_card.dart';
+import '../../widgets/chat_card.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -33,62 +35,80 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: _homeController!.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text(
-                'Users online',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              actions: [
-                Material(
-                  color: Colors.transparent,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
+              body: CustomScrollView(
+                slivers: [
+                  CupertinoSliverNavigationBar(
+                    largeTitle: const Text(
+                      'Chats',
+                      style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: _homeController!.logout,
+                    trailing: Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                          onPressed: _homeController!.logout,
+                          icon: const Icon(Icons.exit_to_app)),
+                    ),
+                    backgroundColor: Theme.of(context).primaryColor,
                   ),
-                )
-              ],
-            ),
-            body: SafeArea(
-                child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(
-                    15,
-                  ),
-                  child: Container(child: userList(context)),
-                )
-              ],
-            )),
-          );
+                  SliverFillRemaining(
+                    child: userList(context),
+                  )
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: _homeController!.openAddChatScreen,
+                child: const Icon(Icons.add),
+              ));
         });
   }
 
   Widget userList(BuildContext context) {
-    if (_homeController!.users.isEmpty) {
-      return const Material(
-        child: Align(
-          alignment: Alignment.center,
-          child: Text('No user online'),
-        ),
+    if (_homeController!.loading) {
+      return const Center(
+        child: CupertinoActivityIndicator(),
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: _homeController!.users.map((user) {
+    if (_homeController!.error) {
+      return const Center(
+        child: Text('Error occured'),
+      );
+    }
+
+    if (_homeController!.chats.isEmpty) {
+      return const Center(
+        child: Text('No existing chat'),
+      );
+    }
+
+    bool chatsWithMessages = _homeController!.chats.where((chat) {
+      return chat.messages!.isNotEmpty;
+    }).isNotEmpty;
+
+    if (!chatsWithMessages) {
+      return const Center(
+        child: Text('No chat exist'),
+      );
+    }
+
+    return ListView(
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+      ),
+      children: _homeController!.chats.map((chat) {
+        if (chat.messages!.isEmpty) {
+          return Container(
+            height: 0,
+            width: 0,
+          );
+        }
+
         return Column(
           children: [
-            UserCard(
-              user: user,
-            ),
+            ChatCard(chat: chat),
             const SizedBox(
               height: 5,
-            ),
+            )
           ],
         );
       }).toList(),

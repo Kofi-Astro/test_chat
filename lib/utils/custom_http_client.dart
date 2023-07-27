@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import './custom_shared_preferences.dart';
 
 class CustomHttpClient extends http.BaseClient {
   final http.Client _httpClient = http.Client();
@@ -8,7 +9,11 @@ class CustomHttpClient extends http.BaseClient {
   };
 
   @override
-  Future<http.StreamedResponse> send(http.BaseRequest request) {
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    final String token = await CustomSharedPreferences.get('token');
+    if (token != null) {
+      defaultHeaders['Authorization'] = "Bearer $token";
+    }
     request.headers.addAll(defaultHeaders);
     return _httpClient.send(request);
   }

@@ -2,22 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../utils/state_control.dart';
 
 import '../../models/custom_error.dart';
-import '../../models/user_with_token.dart';
+import '../../models/user.dart';
 import '../../repositories/register_respository.dart';
 import '../home/home.dart';
 import '../../utils/custom_shared_preferences.dart';
 
-class RegisterController {
+class RegisterController extends StateControl {
   final BuildContext context;
 
   RegisterController({required this.context}) {
     init();
   }
 
-  final RegisterRepository _registerRepository = RegisterRepository();
-  StreamController<String> streamController = StreamController();
+  RegisterRepository _registerRepository = RegisterRepository();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -62,19 +62,14 @@ class RegisterController {
 
     if (loginResponse is CustomError) {
       showAlertDialog(loginResponse.errorMessage!);
-    } else if (loginResponse is UserWithToken) {
+    } else if (loginResponse is User) {
       await CustomSharedPreferences.setString('token', loginResponse.token!);
-      await CustomSharedPreferences.setString(
-          'user', loginResponse.user!.toString());
+      await CustomSharedPreferences.setString('user', loginResponse.toString());
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomeScreen.routeName, (_) => false);
     }
     _fomrSubmitting = false;
     notifyListeners();
-  }
-
-  void notifyListeners() {
-    streamController.add('change');
   }
 
   showAlertDialog(String message) {
@@ -97,10 +92,10 @@ class RegisterController {
         });
   }
 
+  @override
   void dispose() {
     emailController.dispose();
     usernameController.dispose();
     passwordController.dispose();
-    streamController.close();
   }
 }

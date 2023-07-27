@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_chat/screens/contact/contact.dart';
 
 import './screens/home/home.dart';
 import './screens/login/login.dart';
 import './screens/onboarding/onboarding.dart';
 import './screens/register/register.dart';
+import './screens/add_chat/add_chat.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,12 +41,17 @@ class MyApp extends StatelessWidget {
           case '/home':
             return CupertinoPageRoute(
                 builder: (_) => const HomeScreen(), settings: settings);
-          // case '/contact':
-          //   return CupertinoPageRoute(
-          //       builder: (_) => ContactScreen(
-          //             user: user,
-          //           ),
-          //       settings: settings);
+          case '/contact':
+            ContactScreen arguments = settings.arguments as ContactScreen;
+            return CupertinoPageRoute(
+                builder: (_) => ContactScreen(
+                      chat: arguments.chat,
+                    ),
+                settings: settings);
+
+          case '/add-chat':
+            return CupertinoPageRoute(
+                builder: (_) => AddChatScreen(), settings: settings);
 
           default:
             return CupertinoPageRoute(

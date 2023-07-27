@@ -8,27 +8,51 @@ import '../../models/user.dart';
 import '../../utils/custom_shared_preferences.dart';
 import '../../utils/socket_controller.dart';
 import '../login/login.dart';
+import '../../models/chat.dart';
+import '../../models/custom_error.dart';
+import '../../repositories/chat_repository.dart';
+import '../../screens/add_chat/add_chat.dart';
+import '../../utils/state_control.dart';
 
-class HomeController {
+class HomeController extends StateControl {
   final BuildContext context;
 
   HomeController({required this.context}) {
     init();
   }
 
-  StreamController<String> streamController = StreamController();
-  IO.Socket socket = SocketController.socket;
+  ChatRepository _chatRepository = ChatRepository();
+
+  bool _error = false;
+  bool get error => _error;
+
+  bool _loading = true;
+  bool get loading => _loading;
 
   List<User> _users = [];
   List<User> get users => _users;
 
+  List<Chat> _chats = [];
+  List<Chat> get chats => _chats;
+
   void init() {
-    initSocket();
+    getChats();
   }
 
-  void initSocket() async {
-    emitUserIn();
-    socketOnUsersUpdate();
+  void getChats() async {
+    final dynamic chatResponse = await _chatRepository.getChats();
+    if (chatResponse is CustomError) {
+      print('Error: $chatResponse');
+      _error = true;
+    }
+
+    if (chatResponse is List<Chat>) {
+      _chats = await Future.wait(chatResponse.map((chat) => chat.formatChat()));
+      print('Chats: $chats');
+    }
+
+    _loading = false;
+    notifyListeners();
   }
 
   Future<User> getUserFromSharedPreferences() async {
@@ -37,62 +61,19 @@ class HomeController {
     return user;
   }
 
-  void emitUserIn() async {
-    User user = await getUserFromSharedPreferences();
-    Map<String, dynamic> userJson = user.toJson();
-    socket.emit('user-in', userJson);
-  }
-
-  void socketOnUsersUpdate() {
-    socket.on('users-update', (dynamic data) async {
-      List<dynamic> usersData = data;
-      List<User> newUsers = data;
-      User user = await getUserFromSharedPreferences();
-
-      _users = newUsers.where((newUser) => newUser.id != user.id).toList();
-      notifyListeners();
-    });
-  }
-
-  removeUser(String id) {
-    _users.removeWhere((element) => element.id == id);
-    notifyListeners();
-  }
-
-  addUser(User user) {
-    _users.add(user);
-    notifyListeners();
-  }
-
   void logout() async {
-    disconnectSocket();
-
     await CustomSharedPreferences.remove('user');
     await CustomSharedPreferences.remove('token');
     Navigator.of(context)
         .pushNamedAndRemoveUntil(LoginScreen.routeName, (_) => false);
   }
 
-  void notifyListeners() {
-    streamController.add('change');
+  void openAddChatScreen() {
+    Navigator.of(context).pushNamed(AddChatScreen.routeName);
   }
 
-  void connectSocket() {
-    if (!socket.connected) {
-      socket.connect();
-    }
-  }
-
-  void disconnectSocket() {
-    if (socket.connected) {
-      socket.emit('user-left');
-
-      socket.off('users-update');
-    }
-  }
-
+  @override
   void dispose() {
-    disconnectSocket();
-    streamController.close();
+    super.dispose();
   }
 }

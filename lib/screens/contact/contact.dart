@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import './contact_controller.dart';
-import '../../models/user.dart';
+import '../../models/chat.dart';
 
 class ContactScreen extends StatefulWidget {
-  final User user;
-  const ContactScreen({super.key, required this.user});
+  final Chat chat;
+  const ContactScreen({super.key, required this.chat});
 
   @override
   State<ContactScreen> createState() => _ContactScreenState();
@@ -18,7 +18,10 @@ class _ContactScreenState extends State<ContactScreen> {
   void initState() {
     super.initState();
 
-    _contactController = ContactController(context: context, user: widget.user);
+    _contactController = ContactController(
+      context: context,
+      chat: widget.chat,
+    );
   }
 
   @override
@@ -40,8 +43,10 @@ class _ContactScreenState extends State<ContactScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _contactController!.user.username!,
-                  style: const TextStyle(color: Colors.white),
+                  _contactController!.chat.otherUser!.username!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
                 renderOnline(),
               ],
@@ -133,13 +138,13 @@ class _ContactScreenState extends State<ContactScreen> {
 
   Widget renderMessages(BuildContext context) {
     return Column(
-      children: _contactController!.messages.map((message) {
+      children: _contactController!.chat.messages!.map((message) {
         return Column(
           children: [
             Material(
               color: Colors.transparent,
               child: Align(
-                alignment: message.socketId == 'MY_SOCKET_ID'
+                alignment: message.userId == _contactController!.chat.myUser!.id
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: Container(
@@ -152,8 +157,8 @@ class _ContactScreenState extends State<ContactScreen> {
                     margin: const EdgeInsets.symmetric(
                       vertical: 2,
                     ),
-                    color: message.socketId == 'MY_SOCKET_ID'
-                        ? const Color(0xFFFFC0CB)
+                    color: message.userId == _contactController!.chat.myUser!.id
+                        ? const Color(0xFFC0CBFF)
                         : Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -177,16 +182,16 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   Widget renderOnline() {
-    if (_contactController!.userOnlineInMyChat) {
-      return const Text(
-        'online in your conversation',
-        style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.greenAccent),
-      );
-    }
-    return const SizedBox(
+    // if (_contactController!.chatOnlineInMyChat) {
+    //   return const Text(
+    //     'online in your conversation',
+    //     style: TextStyle(
+    //         fontSize: 12,
+    //         fontWeight: FontWeight.bold,
+    //         color: Colors.greenAccent),
+    //   );
+    // }
+    return Container(
       width: 0,
       height: 0,
     );

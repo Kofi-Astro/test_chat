@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../models/custom_error.dart';
-import '../models/user_with_token.dart';
+import '../models/user.dart';
 import '../utils/custom_http_client.dart';
 import '../utils/my_urls.dart';
 
@@ -20,7 +20,7 @@ class LoginRepository {
         return CustomError.fromJson(loginResponse);
       }
 
-      final UserWithToken user = UserWithToken.fromJson(loginResponse);
+      final User user = User.fromJson(loginResponse);
       return user;
     } catch (error) {
       return CustomError(error: true, errorMessage: 'Error has occured');

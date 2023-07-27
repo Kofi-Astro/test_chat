@@ -1,14 +1,20 @@
 class Message {
+  String? id;
+  String? userId;
   String? text;
-  String? socketId;
+  String? createdAt;
 
   Message({
+    this.id,
     this.text,
-    this.socketId = 'MY_SOCKET_ID',
+    this.userId,
+    this.createdAt,
   });
 
   Message.fromJson(Map<String, dynamic> json) {
+    id = json['_id'];
+    userId = json['userId'];
     text = json['message'];
-    socketId = json['from'];
+    createdAt = json['createdAt'];
   }
 }
