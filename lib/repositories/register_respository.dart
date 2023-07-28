@@ -5,6 +5,8 @@ import '../models/user.dart';
 import '../utils/custom_http_client.dart';
 import '../utils/my_urls.dart';
 
+import '../utils/custom_shared_preferences.dart';
+
 class RegisterRepository {
   CustomHttpClient http = CustomHttpClient();
 
@@ -17,16 +19,18 @@ class RegisterRepository {
       var response =
           await http.post(Uri.parse('${MyUrls.serverUrl}/user'), body: body);
 
-      final dynamic loginResponse = jsonDecode(response.body);
+      final dynamic registerResponse = jsonDecode(response.body);
+      await CustomSharedPreferences.setString(
+          'token', registerResponse['token']);
 
-      if (loginResponse['error'] != null) {
-        return CustomError.fromJson(loginResponse);
+      if (registerResponse['error'] != null) {
+        return CustomError.fromJson(registerResponse);
       }
 
-      final User user = User.fromJson(loginResponse);
+      final User user = User.fromJson(registerResponse['user']);
       return user;
     } catch (error) {
-      rethrow;
+      throw error;
     }
   }
 }

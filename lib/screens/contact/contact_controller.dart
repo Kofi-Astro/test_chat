@@ -1,12 +1,8 @@
-
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-
 import '../../models/message.dart';
 import '../../models/chat.dart';
 
 import '../../repositories/chat_repository.dart';
-import '../../utils/socket_controller.dart';
 import '../../utils/state_control.dart';
 
 class ContactController extends StateControl {
@@ -23,8 +19,8 @@ class ContactController extends StateControl {
 
   TextEditingController textEditingController = TextEditingController();
 
-  IO.Socket socket = SocketController.socket;
-  final ChatRepository _chatRepository = ChatRepository();
+  // IO.Socket socket = SocketController.socket;
+  ChatRepository _chatRepository = ChatRepository();
 
   final bool _error = false;
   bool get error => _error;
@@ -34,41 +30,45 @@ class ContactController extends StateControl {
 
   @override
   void init() {
-    socket.on('new-chat', (dynamic data) {
-      print('This is the new-chat: $data');
-    });
+    // socket.on('new-chat', (dynamic data) {
+    //   print('This is the new-chat: $data');
+    // });
 
-    socket.on('new-message', (dynamic data) {
-      print('This is new-message: $data');
-    });
+    // socket.on('new-message', (dynamic data) {
+    //   print('This is new-message: $data');
+    // });
   }
 
   void sendMessage() {
     String text = textEditingController.text;
     _chatRepository.sendMessage(chat.id!, text);
-    addMessage(text);
+    // addMessage(text);
     textEditingController.text = '';
-    notifyListeners();
-  }
+    // notifyListeners();
 
-  void addMessage(String text) {
     Message message = Message(
       text: text,
       userId: chat.myUser!.id,
     );
-    chat.messages!.add(message);
+
+    addMessage(message);
   }
 
-  void disconnectSocket() {
-    if (socket.connected) {
-      socket.disconnect();
-    }
+  void addMessage(Message message) {
+    chat.messages!.add(message);
+    notifyListeners();
   }
+
+  // void disconnectSocket() {
+  //   if (socket.connected) {
+  //     socket.disconnect();
+  //   }
+  // }
 
   @override
   void dispose() {
     super.dispose();
     textEditingController.dispose();
-    disconnectSocket();
+    // disconnectSocket();
   }
 }

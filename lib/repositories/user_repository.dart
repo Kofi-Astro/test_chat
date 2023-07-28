@@ -11,12 +11,16 @@ class UserRepository {
   Future<dynamic> getUsers() async {
     try {
       var response = await http.get(Uri.parse('${MyUrls.serverUrl}/users'));
+
       final List<dynamic> userResponse = jsonDecode(response.body)['users'];
 
       final List<User> users =
           userResponse.map((user) => User.fromJson(user)).toList();
+      // print(users);
       return users;
     } catch (error) {
+      print(error);
+
       return CustomError.fromJson({
         'error': true,
         'errorMessage': 'Error',

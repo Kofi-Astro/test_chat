@@ -4,15 +4,20 @@ import './contact_controller.dart';
 import '../../models/chat.dart';
 
 class ContactScreen extends StatefulWidget {
+  static const String routeName = '/contact';
+
   final Chat chat;
-  const ContactScreen({super.key, required this.chat});
+  const ContactScreen({
+    super.key,
+    required this.chat,
+  });
 
   @override
   State<ContactScreen> createState() => _ContactScreenState();
 }
 
 class _ContactScreenState extends State<ContactScreen> {
-  ContactController? _contactController;
+  late ContactController _contactController;
 
   @override
   void initState() {
@@ -26,14 +31,14 @@ class _ContactScreenState extends State<ContactScreen> {
 
   @override
   void dispose() {
-    _contactController!.dispose();
+    _contactController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
-        stream: _contactController!.streamController.stream,
+        stream: _contactController.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: const Color(0xffeeeeeeee),
@@ -43,7 +48,7 @@ class _ContactScreenState extends State<ContactScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _contactController!.chat.otherUser!.username!,
+                  _contactController.chat.otherUser!.username!,
                   style: const TextStyle(
                     color: Colors.white,
                   ),
@@ -90,9 +95,9 @@ class _ContactScreenState extends State<ContactScreen> {
                                 child: TextField(
                                   cursorColor: Theme.of(context).primaryColor,
                                   controller:
-                                      _contactController!.textEditingController,
+                                      _contactController.textEditingController,
                                   onSubmitted: (_) {
-                                    _contactController!.sendMessage();
+                                    _contactController.sendMessage();
                                   },
                                   decoration: const InputDecoration(
                                     contentPadding: EdgeInsets.only(bottom: 0),
@@ -112,7 +117,7 @@ class _ContactScreenState extends State<ContactScreen> {
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(50),
                           child: InkWell(
-                            onTap: _contactController!.sendMessage,
+                            onTap: _contactController.sendMessage,
                             borderRadius: BorderRadius.circular(50),
                             child: Container(
                               width: 50,
@@ -138,13 +143,13 @@ class _ContactScreenState extends State<ContactScreen> {
 
   Widget renderMessages(BuildContext context) {
     return Column(
-      children: _contactController!.chat.messages!.map((message) {
+      children: _contactController.chat.messages!.map((message) {
         return Column(
           children: [
             Material(
               color: Colors.transparent,
               child: Align(
-                alignment: message.userId == _contactController!.chat.myUser!.id
+                alignment: message.userId == _contactController.chat.myUser!.id
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: Container(
@@ -157,7 +162,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     margin: const EdgeInsets.symmetric(
                       vertical: 2,
                     ),
-                    color: message.userId == _contactController!.chat.myUser!.id
+                    color: message.userId == _contactController.chat.myUser!.id
                         ? const Color(0xFFC0CBFF)
                         : Colors.white,
                     child: Padding(

@@ -5,6 +5,8 @@ import '../models/user.dart';
 import '../utils/custom_http_client.dart';
 import '../utils/my_urls.dart';
 
+import '../utils/custom_shared_preferences.dart';
+
 class LoginRepository {
   CustomHttpClient http = CustomHttpClient();
 
@@ -14,6 +16,7 @@ class LoginRepository {
 
       var response =
           await http.post(Uri.parse('${MyUrls.serverUrl}/auth'), body: body);
+
       final dynamic loginResponse = jsonDecode(response.body);
 
       if (loginResponse['error'] != null) {
@@ -21,6 +24,8 @@ class LoginRepository {
       }
 
       final User user = User.fromJson(loginResponse);
+      await CustomSharedPreferences.setString('token', loginResponse['token']);
+      await CustomSharedPreferences.setString('user', user.toString());
       return user;
     } catch (error) {
       return CustomError(error: true, errorMessage: 'Error has occured');

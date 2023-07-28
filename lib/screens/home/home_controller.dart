@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:test_chat/utils/socket_controller.dart';
 
 import '../../models/user.dart';
 import '../../utils/custom_shared_preferences.dart';
@@ -20,6 +22,7 @@ class HomeController extends StateControl {
   }
 
   final ChatRepository _chatRepository = ChatRepository();
+  IO.Socket socket = SocketController.socket;
 
   bool _error = false;
   bool get error => _error;
@@ -36,6 +39,38 @@ class HomeController extends StateControl {
   @override
   void init() {
     getChats();
+    initSocket();
+  }
+
+  void initSocket() {
+    emitUserIn();
+    onMessage();
+  }
+
+  void emitUserIn() async {
+    User user = await getUserFromSharedPreferences();
+    Map<String, dynamic> json = user.toJson();
+    socket.emit('user-in', json);
+  }
+
+  void onMessage() async {
+    socket.on('message', (dynamic data) async {
+      Map<String, dynamic> json = data;
+      Chat chat = Chat.fromJson(json);
+
+      int chatIndex = _chats.indexWhere((_chat) => _chat.id == chat.id);
+
+      if (chatIndex > -1) {
+        _chats[chatIndex].messages = chat.messages;
+      } else {
+        _chats.add(await chat.formatChat());
+      }
+      notifyListeners();
+    });
+  }
+
+  void emitUserLeft() async {
+    socket.emit("user-left");
   }
 
   void getChats() async {
@@ -46,12 +81,18 @@ class HomeController extends StateControl {
     }
 
     if (chatResponse is List<Chat>) {
-      _chats = await Future.wait(chatResponse.map((chat) => chat.formatChat()));
-      print('Chats: $chats');
+      // _chats = await Future.wait(chatResponse.map((chat) => chat.formatChat()));
+      // print('Chats: $chats');
+
+      _chats = await formatChats(chatResponse);
     }
 
     _loading = false;
     notifyListeners();
+  }
+
+  Future<List<Chat>> formatChats(List<Chat> chats) async {
+    return await Future.wait(chats.map((chat) => chat.formatChat()));
   }
 
   Future<User> getUserFromSharedPreferences() async {
@@ -61,6 +102,7 @@ class HomeController extends StateControl {
   }
 
   void logout() async {
+    emitUserLeft();
     await CustomSharedPreferences.remove('user');
     await CustomSharedPreferences.remove('token');
     Navigator.of(context)
@@ -71,4 +113,9 @@ class HomeController extends StateControl {
     Navigator.of(context).pushNamed(AddChatScreen.routeName);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    emitUserLeft();
+  }
 }

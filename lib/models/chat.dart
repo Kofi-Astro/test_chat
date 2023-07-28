@@ -22,11 +22,21 @@ class Chat {
 
   Chat.fromJson(Map<String, dynamic> json) {
     print("json = $json");
+
     id = json['_id'];
     lowerIdUser = User.fromJson(json['lowerId']);
     higherIdUser = User.fromJson(json['higherId']);
     List<dynamic> messages = json['messages'];
     messages = messages.map((message) => Message.fromJson(message)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    json['_id'] = id;
+    json['lowerId'] = lowerIdUser!.toJson();
+    json['higherId'] = higherIdUser!.toJson();
+    json['messages'] = messages!.map((message) => message.toJson()).toList();
+    return json;
   }
 
   Future<Chat> formatChat() async {

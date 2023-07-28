@@ -14,7 +14,7 @@ class AddChatScreen extends StatefulWidget {
 }
 
 class _AddChatScreenState extends State<AddChatScreen> {
-  AddChatController? _addChatController;
+  late AddChatController _addChatController;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _AddChatScreenState extends State<AddChatScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
-        stream: _addChatController!.streamController.stream,
+        stream: _addChatController.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
             appBar: CupertinoNavigationBar(
@@ -50,19 +50,19 @@ class _AddChatScreenState extends State<AddChatScreen> {
   }
 
   Widget renderusers() {
-    if (_addChatController!.loading) {
+    if (_addChatController.loading) {
       return const Center(
         child: CupertinoActivityIndicator(),
       );
     }
 
-    if (_addChatController!.error) {
+    if (_addChatController.error) {
       return const Center(
         child: Text('Error occured fetching users'),
       );
     }
 
-    if (_addChatController!.users.isEmpty) {
+    if (_addChatController.users.isEmpty) {
       return const Center(
         child: Text('No users found'),
       );
@@ -73,11 +73,12 @@ class _AddChatScreenState extends State<AddChatScreen> {
         vertical: 10,
         horizontal: 10,
       ),
-      children: _addChatController!.users.map((user) {
+      children: _addChatController.users.map((user) {
         return Column(
           children: [
             UserCard(
               user: user,
+              onTap: _addChatController.newChat,
             ),
             const SizedBox(
               height: 5,

@@ -14,7 +14,17 @@ class Message {
   Message.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     userId = json['userId'];
-    text = json['message'];
+    text = json['text'];
     createdAt = json['createdAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    json['_id'] = id;
+    json['userId'] = userId;
+    json['text'] = text;
+    json['createdAt'] = createdAt;
+
+    return json;
   }
 }
