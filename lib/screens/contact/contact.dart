@@ -142,6 +142,10 @@ class _ContactScreenState extends State<ContactScreen> {
   }
 
   Widget renderMessages(BuildContext context) {
+    if (_contactController.chat.messages == null) {
+      // Return a loading indicator or empty widget if messages is null
+      return Container();
+    }
     return Column(
       children: _contactController.chat.messages!.map((message) {
         return Column(

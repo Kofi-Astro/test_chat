@@ -39,6 +39,7 @@ class AddChatController extends StateControl {
 
   void getUsers() async {
     dynamic response = await _userRepository.getUsers();
+
     if (response is CustomError) {
       _error = true;
     }
@@ -57,9 +58,12 @@ class AddChatController extends StateControl {
 
   void newChat(User user) async {
     _showProgressDialog();
+    print(user.username);
 
     dynamic response = await _chatRepository.getChatByUsersId(user.id!);
+
     if (response is CustomError) {
+      await _dismissProgressDialog();
       _error = true;
     }
     if (response is Chat) {

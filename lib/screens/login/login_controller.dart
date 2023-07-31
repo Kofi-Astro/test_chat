@@ -52,9 +52,9 @@ class LoginController extends StateControl {
     } else if (loginResponse is User) {
       // await CustomSharedPreferences.setString('token', loginResponse.token!);
       // await CustomSharedPreferences.setString('user', loginResponse.toString());
-
-      print('loginresponse.id : ${loginResponse.id}');
-      print('loginResponse.toString: ${loginResponse.toString()}');
+      // print(loginResponse);
+      // print('loginresponse.id : ${loginResponse.id}');
+      // print('loginResponse.toString: ${loginResponse.toString()}');
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
       // Navigator.pushReplacementNamed(context, HomeScreen.routeName);
     }

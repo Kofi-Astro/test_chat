@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeController? _homeController;
+  late HomeController _homeController;
 
   @override
   void initState() {
@@ -24,14 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _homeController!.dispose();
+    _homeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
-        stream: _homeController!.streamController.stream,
+        stream: _homeController.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
               body: CustomScrollView(
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     trailing: Material(
                       color: Colors.transparent,
                       child: IconButton(
-                          onPressed: _homeController!.logout,
+                          onPressed: _homeController.logout,
                           icon: const Icon(Icons.exit_to_app)),
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
@@ -55,33 +55,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: _homeController!.openAddChatScreen,
+                onPressed: _homeController.openAddChatScreen,
                 child: const Icon(Icons.add),
               ));
         });
   }
 
   Widget userList(BuildContext context) {
-    if (_homeController!.loading) {
+    if (_homeController.loading) {
       return const Center(
         child: CupertinoActivityIndicator(),
       );
     }
 
-    if (_homeController!.error) {
+    if (_homeController.error) {
       return const Center(
         child: Text('Error occured'),
       );
     }
 
-    if (_homeController!.chats.isEmpty) {
+    if (_homeController.chats.isEmpty) {
       return const Center(
         child: Text('No existing chat'),
       );
     }
 
-    bool chatsWithMessages = _homeController!.chats.where((chat) {
-      return chat.messages!.isNotEmpty;
+    bool chatsWithMessages = _homeController.chats.where((chat) {
+      return chat.messages?.isNotEmpty ?? false;
     }).isNotEmpty;
 
     if (!chatsWithMessages) {
@@ -94,13 +94,14 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.symmetric(
         vertical: 10,
       ),
-      children: _homeController!.chats.map((chat) {
-        if (chat.messages!.isEmpty) {
+      children: _homeController.chats.map((chat) {
+        if (chat.messages?.isEmpty ?? true) {
           return const SizedBox(
             height: 0,
             width: 0,
           );
         }
+        print(chat);
 
         return Column(
           children: [

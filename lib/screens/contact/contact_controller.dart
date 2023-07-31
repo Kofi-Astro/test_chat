@@ -3,7 +3,10 @@ import '../../models/message.dart';
 import '../../models/chat.dart';
 
 import '../../repositories/chat_repository.dart';
+import '../../utils/socket_controller.dart';
 import '../../utils/state_control.dart';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ContactController extends StateControl {
   BuildContext context;
@@ -19,7 +22,7 @@ class ContactController extends StateControl {
 
   TextEditingController textEditingController = TextEditingController();
 
-  // IO.Socket socket = SocketController.socket;
+  IO.Socket socket = SocketController.socket;
   ChatRepository _chatRepository = ChatRepository();
 
   final bool _error = false;
@@ -30,13 +33,14 @@ class ContactController extends StateControl {
 
   @override
   void init() {
-    // socket.on('new-chat', (dynamic data) {
-    //   print('This is the new-chat: $data');
-    // });
+    socket.on('new-chat', (dynamic data) {
+      print('New chat: $data');
+    });
 
-    // socket.on('new-message', (dynamic data) {
-    //   print('This is new-message: $data');
-    // });
+    socket.on('new-message', (dynamic data) {
+      print('New message: $data');
+    });
+    notifyListeners();
   }
 
   void sendMessage() {

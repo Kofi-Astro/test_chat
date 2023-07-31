@@ -79,8 +79,10 @@ class HomeController extends StateControl {
 
   void getChats() async {
     final dynamic chatResponse = await _chatRepository.getChats();
+
+    print(chatResponse);
     if (chatResponse is CustomError) {
-      print('Error: $chatResponse');
+      print('Error: ${chatResponse.error}');
       _error = true;
     }
 

@@ -12,7 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  LoginController? _loginController;
+  late LoginController _loginController;
 
   @override
   void initState() {
@@ -23,14 +23,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _loginController!.dispose();
+    _loginController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
-        stream: _loginController!.streamController.stream,
+        stream: _loginController.streamController.stream,
         builder: (context, snapshot) {
           return Scaffold(
             body: SafeArea(
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextField(
                         cursorColor: Theme.of(context).primaryColor,
-                        controller: _loginController!.usernameController,
+                        controller: _loginController.usernameController,
                         decoration: const InputDecoration(
                           labelText: 'Username',
                         ),
@@ -73,11 +73,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextField(
                         cursorColor: Theme.of(context).primaryColor,
-                        controller: _loginController!.passwordController,
+                        controller: _loginController.passwordController,
                         decoration:
                             const InputDecoration(labelText: 'Password'),
                         onSubmitted: (_) {
-                          _loginController!.submitForm();
+                          _loginController.submitForm();
                         },
                         obscureText: true,
                       ),
@@ -85,12 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 60,
                       ),
                       MyButton(
-                        title: _loginController!.formSubmitting
+                        title: _loginController.formSubmitting
                             ? 'Logging in ....'
                             : 'Log in',
-                        onTap: _loginController!.submitForm,
-                        disabled: !_loginController!.isFormValid ||
-                            _loginController!.formSubmitting,
+                        onTap: _loginController.submitForm,
+                        disabled: !_loginController.isFormValid ||
+                            _loginController.formSubmitting,
                       ),
                       const SizedBox(
                         height: 35,

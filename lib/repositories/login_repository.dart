@@ -23,7 +23,8 @@ class LoginRepository {
         return CustomError.fromJson(loginResponse);
       }
 
-      final User user = User.fromJson(loginResponse);
+      final User user = User.fromJson(loginResponse['user']);
+
       await CustomSharedPreferences.setString('token', loginResponse['token']);
       await CustomSharedPreferences.setString('user', user.toString());
       return user;

@@ -41,9 +41,14 @@ class ChatRepository {
     try {
       var response =
           await http.get(Uri.parse('${MyUrls.serverUrl}/chats/user/$userId'));
+
+      // print(response.body);
+
       final dynamic chatResponse = jsonDecode(response.body)['chat'];
 
+      // print(chatResponse);
       final Chat chat = Chat.fromJson(chatResponse);
+      print(chat);
       return chat;
     } catch (error) {
       return CustomError.fromJson({'error': true, 'errorMessage': 'Error'});

@@ -16,11 +16,9 @@ class UserRepository {
 
       final List<User> users =
           userResponse.map((user) => User.fromJson(user)).toList();
-      // print(users);
+
       return users;
     } catch (error) {
-      print(error);
-
       return CustomError.fromJson({
         'error': true,
         'errorMessage': 'Error',
