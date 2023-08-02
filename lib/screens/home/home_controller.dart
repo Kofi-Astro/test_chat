@@ -71,7 +71,7 @@ class HomeController extends StateControl {
       // int chatIndex = _chats.indexWhere((_chat) => _chat.id == chat.id);
 
       int chatIndex = chats.indexWhere((_chat) => _chat.id == chat.id);
-      List<Chat> newChats = chats;
+      List<Chat> newChats = List<Chat>.from(chats);
 
       if (chatIndex > -1) {
         // _chats[chatIndex].messages = chat.messages;
@@ -122,6 +122,12 @@ class HomeController extends StateControl {
 
   Future<List<Chat>> formatChats(List<Chat> chats) async {
     return await Future.wait(chats.map((chat) => chat.formatChat()));
+  }
+
+  int calculateChatsWithMessages() {
+    print('calling ${chats.where((chat) => chat.messages!.length > 0).length}');
+
+    return chats.where((chat) => chat.messages!.length > 0).length;
   }
 
   Future<User> getUserFromSharedPreferences() async {

@@ -61,8 +61,9 @@ class ContactController extends StateControl {
     Message message = Message(
       text: text,
       userId: chat.myUser!.id,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
     );
-
+    print(message);
     addMessage(message);
   }
 

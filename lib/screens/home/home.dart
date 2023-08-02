@@ -55,9 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  SliverFillRemaining(
-                    child: userList(context),
-                  )
+                  // SliverFillRemaining(
+                  //   child: userList(context),
+                  // )
+                  usersList(context),
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -67,22 +68,26 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  Widget userList(BuildContext context) {
+  Widget usersList(BuildContext context) {
     if (_homeController.loading) {
-      return const Center(
-        child: CupertinoActivityIndicator(),
+      // return const Center(
+      //   child: CupertinoActivityIndicator(),
+      // );
+
+      return SliverFillRemaining(
+        child: Center(child: CupertinoActivityIndicator()),
       );
     }
 
     if (_homeController.error) {
-      return const Center(
-        child: Text('Error occured'),
+      return SliverFillRemaining(
+        child: Center(child: Text('Error occured fetched chats')),
       );
     }
 
     if (_homeController.chats.isEmpty) {
-      return const Center(
-        child: Text('No existing chat'),
+      return SliverFillRemaining(
+        child: Center(child: Text('No chats exist')),
       );
     }
 
@@ -91,33 +96,61 @@ class _HomeScreenState extends State<HomeScreen> {
     }).isNotEmpty;
 
     if (!chatsWithMessages) {
-      return const Center(
-        child: Text('No chat exist'),
+      return SliverFillRemaining(
+        child: Center(
+          child: Text('No chat exist'),
+        ),
       );
     }
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
-      children: _homeController.chats.map((chat) {
-        if (chat.messages?.isEmpty ?? true) {
-          return const SizedBox(
-            height: 0,
-            width: 0,
-          );
-        }
-        print(chat);
-
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      sliver: SliverList(
+          delegate:
+              SliverChildBuilderDelegate((BuildContext context, int index) {
         return Column(
-          children: [
-            ChatCard(chat: chat),
-            const SizedBox(
-              height: 5,
-            )
-          ],
+          children: _homeController.chats.map((chat) {
+            if (chat.messages!.length == 0) {
+              return Container(
+                height: 0,
+                width: 0,
+              );
+            }
+            return Column(
+              children: [
+                ChatCard(chat: chat),
+                SizedBox(
+                  height: 5,
+                ),
+              ],
+            );
+          }).toList(),
         );
-      }).toList(),
+      }, childCount: 1)),
     );
+
+    // return ListView(
+    //   padding: const EdgeInsets.symmetric(
+    //     vertical: 10,
+    //   ),
+    //   children: _homeController.chats.map((chat) {
+    //     if (chat.messages?.isEmpty ?? true) {
+    //       return const SizedBox(
+    //         height: 0,
+    //         width: 0,
+    //       );
+    //     }
+    //     print(chat);
+
+    //     return Column(
+    //       children: [
+    //         ChatCard(chat: chat),
+    //         const SizedBox(
+    //           height: 5,
+    //         )
+    //       ],
+    //     );
+    //   }).toList(),
+    // );
   }
 }
