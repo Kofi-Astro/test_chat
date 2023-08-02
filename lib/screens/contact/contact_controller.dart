@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import '../../models/message.dart';
 import '../../models/chat.dart';
+import 'package:provider/provider.dart';
+import '../../data/providers/chats_provider.dart';
 
 import '../../repositories/chat_repository.dart';
 import '../../utils/socket_controller.dart';
 import '../../utils/state_control.dart';
 
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+// import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ContactController extends StateControl {
   BuildContext context;
 
-  Chat chat;
+  // Chat chat;
+  late ChatsProvider _chatsProvider;
+  Chat get chat => _chatsProvider.selectedChat;
 
   ContactController({
     required this.context,
-    required this.chat,
+    // required this.chat,
   }) {
     init();
   }
 
   TextEditingController textEditingController = TextEditingController();
 
-  IO.Socket socket = SocketController.socket;
+  // IO.Socket socket = SocketController.socket;
   ChatRepository _chatRepository = ChatRepository();
 
   final bool _error = false;
@@ -33,15 +37,19 @@ class ContactController extends StateControl {
 
   @override
   void init() {
-    socket.on('new-chat', (dynamic data) {
-      print('New chat: $data');
-    });
+    // socket.on('new-chat', (dynamic data) {
+    //   print('New chat: $data');
+    // });
 
-    socket.on('new-message', (dynamic data) {
-      print('New message: $data');
-    });
-    notifyListeners();
+    // socket.on('new-message', (dynamic data) {
+    //   print('New message: $data');
+    // });
+    // notifyListeners();
   }
+  void initProvider() {
+    _chatsProvider = Provider.of<ChatsProvider>(context);
+  }
+  // }
 
   void sendMessage() {
     String text = textEditingController.text;
@@ -59,8 +67,11 @@ class ContactController extends StateControl {
   }
 
   void addMessage(Message message) {
-    chat.messages!.add(message);
-    notifyListeners();
+    // print(message.userId);
+    // chat.messages!.add(message);
+    // notifyListeners();
+
+    _chatsProvider.addMessageToSelectedChat(message);
   }
 
   // void disconnectSocket() {

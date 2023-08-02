@@ -18,6 +18,10 @@ class Message {
     createdAt = json['createdAt'];
   }
 
+  // factory Message.fromJson(Map<String, dynamic> json) {
+  //   var message = Message(id: );
+  // }
+
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};
     json['_id'] = id;

@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:test_chat/utils/socket_controller.dart';
+import 'package:provider/provider.dart';
 
+import '../../data/providers/chats_provider.dart';
 import '../../models/user.dart';
 import '../../utils/custom_shared_preferences.dart';
 import '../login/login.dart';
@@ -21,8 +23,9 @@ class HomeController extends StateControl {
     init();
   }
 
-  final ChatRepository _chatRepository = ChatRepository();
+  ChatRepository _chatRepository = ChatRepository();
   IO.Socket socket = SocketController.socket;
+  late ChatsProvider _chatsProvider;
 
   bool _error = false;
   bool get error => _error;
@@ -33,13 +36,18 @@ class HomeController extends StateControl {
   final List<User> _users = [];
   List<User> get users => _users;
 
-  List<Chat> _chats = [];
-  List<Chat> get chats => _chats;
+  // List<Chat> _chats = [];
+  // List<Chat> get chats => _chats;
+  List<Chat> get chats => _chatsProvider.chats;
 
   @override
   void init() {
     getChats();
     initSocket();
+  }
+
+  void initProvider() {
+    _chatsProvider = Provider.of<ChatsProvider>(context);
   }
 
   void initSocket() {
@@ -55,21 +63,34 @@ class HomeController extends StateControl {
 
   void onMessage() async {
     socket.on('message', (dynamic data) async {
-      // Map<String, dynamic> json = data;
+      Map<String, dynamic> json = data;
 
-      print('data: $data');
-
-      Map<String, dynamic> json = jsonDecode(data);
+      // Map<String, dynamic> json = jsonDecode(data);
       Chat chat = Chat.fromJson(json);
 
-      int chatIndex = _chats.indexWhere((_chat) => _chat.id == chat.id);
+      // int chatIndex = _chats.indexWhere((_chat) => _chat.id == chat.id);
+
+      int chatIndex = chats.indexWhere((_chat) => _chat.id == chat.id);
+      List<Chat> newChats = chats;
 
       if (chatIndex > -1) {
-        _chats[chatIndex].messages = chat.messages;
+        // _chats[chatIndex].messages = chat.messages;
+        newChats[chatIndex].messages = chat.messages;
       } else {
-        _chats.add(await chat.formatChat());
+        // _chats.add(await chat.formatChat());
+        newChats.add(await chat.formatChat());
       }
-      notifyListeners();
+
+      _chatsProvider.setChats(newChats);
+      if (_chatsProvider.selectedChat != null) {
+        _chatsProvider.chats.forEach((chat) {
+          if (chat.id == _chatsProvider.selectedChat.id) {
+            _chatsProvider.setSelectedChat(chat);
+          }
+        });
+      }
+      // notifyListeners();
+      _chatsProvider.setChats(newChats);
     });
   }
 
@@ -80,7 +101,6 @@ class HomeController extends StateControl {
   void getChats() async {
     final dynamic chatResponse = await _chatRepository.getChats();
 
-    print(chatResponse);
     if (chatResponse is CustomError) {
       print('Error: ${chatResponse.error}');
       _error = true;
@@ -90,7 +110,10 @@ class HomeController extends StateControl {
       // _chats = await Future.wait(chatResponse.map((chat) => chat.formatChat()));
       // print('Chats: $chats');
 
-      _chats = await formatChats(chatResponse);
+      // _chats = await formatChats(chatResponse);
+      // _chatsProvider.setChats(await formatChats(chatResponse));
+      List<Chat> chats = await formatChats(chatResponse);
+      print("chats = $chats");
     }
 
     _loading = false;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/chat.dart';
 import '../screens/contact/contact.dart';
+import '../data/providers/chats_provider.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat chat;
@@ -16,8 +18,9 @@ class ChatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(ContactScreen.routeName,
-            arguments: ContactScreen(chat: chat));
+        Navigator.of(context).pushNamed(
+          ContactScreen.routeName,
+        );
       },
       child: Container(
         padding: const EdgeInsets.only(
@@ -53,7 +56,8 @@ class ChatCard extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      chat.messages![0].text!,
+                      // chat.messages![0].text!,
+                      chat.messages![chat.messages!.length - 1].text!,
                       style: const TextStyle(fontSize: 12),
                       maxLines: 2,
                     ),

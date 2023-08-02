@@ -29,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    _homeController.initProvider();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object?>(
         stream: _homeController.streamController.stream,

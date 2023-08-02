@@ -6,10 +6,10 @@ import '../../models/chat.dart';
 class ContactScreen extends StatefulWidget {
   static const String routeName = '/contact';
 
-  final Chat chat;
+  // final Chat chat;
   const ContactScreen({
     super.key,
-    required this.chat,
+    // required this.chat,
   });
 
   @override
@@ -25,7 +25,7 @@ class _ContactScreenState extends State<ContactScreen> {
 
     _contactController = ContactController(
       context: context,
-      chat: widget.chat,
+      // chat: widget.chat,
     );
   }
 
@@ -33,6 +33,12 @@ class _ContactScreenState extends State<ContactScreen> {
   void dispose() {
     _contactController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _contactController.initProvider();
+    super.didChangeDependencies();
   }
 
   @override
@@ -93,6 +99,7 @@ class _ContactScreenState extends State<ContactScreen> {
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: TextField(
+                                  autocorrect: false,
                                   cursorColor: Theme.of(context).primaryColor,
                                   controller:
                                       _contactController.textEditingController,

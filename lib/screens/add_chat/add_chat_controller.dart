@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/custom_error.dart';
 import '../../models/user.dart';
+import '../../data/providers/chats_provider.dart';
 
 import '../../repositories/user_repository.dart';
 import '../../utils/state_control.dart';
@@ -58,7 +60,6 @@ class AddChatController extends StateControl {
 
   void newChat(User user) async {
     _showProgressDialog();
-    print(user.username);
 
     dynamic response = await _chatRepository.getChatByUsersId(user.id!);
 
@@ -69,8 +70,27 @@ class AddChatController extends StateControl {
     if (response is Chat) {
       await _dismissProgressDialog();
       _chat = await response.formatChat();
-      Navigator.of(context).pushNamed(ContactScreen.routeName,
-          arguments: ContactScreen(chat: _chat));
+      // Navigator.of(context).pushNamed(ContactScreen.routeName,
+      //     arguments: ContactScreen(
+      //       chat: _chat,
+      //     ));
+
+      ChatsProvider _chatsProvider =
+          Provider.of<ChatsProvider>(context, listen: false);
+
+      bool findChatIndex =
+          _chatsProvider.chats.indexWhere((chat) => chat.id == _chat.id) > -1;
+      if (!findChatIndex) {
+        print('Enter to begin chat');
+        List<Chat> newChats = new List<Chat>.from(_chatsProvider.chats);
+        newChats.add(_chat);
+        _chatsProvider.setChats(newChats);
+      } else {
+        print('Can\t access chat');
+      }
+
+      _chatsProvider.setSelectedChat(_chat);
+      Navigator.of(context).pushNamed(ContactScreen.routeName);
     }
 
     await _dismissProgressDialog();
