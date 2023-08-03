@@ -4,6 +4,7 @@ class Message {
   String? text;
   // String? createdAt;
   int? createdAt;
+  bool? unread;
 
   Message({
     this.id,
