@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                   builder: (_) => const HomeScreen(), settings: settings);
             case '/contact':
               return CupertinoPageRoute(
-                  builder: (_) => ContactScreen(), settings: settings);
+                  builder: (_) => const ContactScreen(), settings: settings);
 
             case '/add-chat':
               return CupertinoPageRoute(

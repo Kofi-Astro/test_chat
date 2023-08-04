@@ -16,7 +16,7 @@ class ChatCard extends StatelessWidget {
 
   String? myId;
 
-  var format = new DateFormat("HH:mm");
+  var format = DateFormat("HH:mm");
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class ChatCard extends StatelessWidget {
         //   ContactScreen.routeName,
         // );
 
-        ChatsProvider _chatsProvider =
+        ChatsProvider chatsProvider =
             Provider.of<ChatsProvider>(context, listen: false);
-        _chatsProvider.setSelectedChat(chat);
+        chatsProvider.setSelectedChat(chat);
         Navigator.of(context).pushNamed(ContactScreen.routeName);
       },
       child: Container(
@@ -77,7 +77,7 @@ class ChatCard extends StatelessWidget {
                           height: 15,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 15, left: 30),
+                          padding: const EdgeInsets.only(right: 15, left: 30),
                           child: Column(
                             children: <Widget>[
                               Text(
@@ -89,17 +89,17 @@ class ChatCard extends StatelessWidget {
                                   fontSize: 12,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 2),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   color: Colors.blue,
                                 ),
-                                child: Text(
+                                child: const Text(
                                   '2',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -129,7 +129,7 @@ class ChatCard extends StatelessWidget {
 
   String messageDate(int milliseconds) {
     print("milliseconds $milliseconds");
-    DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(milliseconds);
     return format.format(date);
   }
 
@@ -138,20 +138,20 @@ class ChatCard extends StatelessWidget {
   }
 
   Widget unreadMessages() {
-    final _unreadMessages = _numberOfUnreadMessagesByMe();
-    if (_unreadMessages == 0) {
-      return Container(
+    final unreadMessages = _numberOfUnreadMessagesByMe();
+    if (unreadMessages == 0) {
+      return const SizedBox(
         width: 0,
         height: 0,
       );
     }
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
       color: Colors.blue,
       child: Text(
-        _unreadMessages.toString(),
-        style: TextStyle(
+        unreadMessages.toString(),
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 12,
         ),

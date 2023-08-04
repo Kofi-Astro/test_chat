@@ -74,19 +74,19 @@ class _HomeScreenState extends State<HomeScreen> {
       //   child: CupertinoActivityIndicator(),
       // );
 
-      return SliverFillRemaining(
+      return const SliverFillRemaining(
         child: Center(child: CupertinoActivityIndicator()),
       );
     }
 
     if (_homeController.error) {
-      return SliverFillRemaining(
+      return const SliverFillRemaining(
         child: Center(child: Text('Error occured fetched chats')),
       );
     }
 
     if (_homeController.chats.isEmpty) {
-      return SliverFillRemaining(
+      return const SliverFillRemaining(
         child: Center(child: Text('No chats exist')),
       );
     }
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }).isNotEmpty;
 
     if (!chatsWithMessages) {
-      return SliverFillRemaining(
+      return const SliverFillRemaining(
         child: Center(
           child: Text('No chat exist'),
         ),
@@ -104,14 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return SliverPadding(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       sliver: SliverList(
           delegate:
               SliverChildBuilderDelegate((BuildContext context, int index) {
         return Column(
           children: _homeController.chats.map((chat) {
-            if (chat.messages!.length == 0) {
-              return Container(
+            if (chat.messages!.isEmpty) {
+              return const SizedBox(
                 height: 0,
                 width: 0,
               );
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Column(
               children: [
                 ChatCard(chat: chat),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:test_chat/screens/contact/contact.dart';
 
 import '../../widgets/user_card.dart';
 import './add_chat_controller.dart';
@@ -79,6 +80,9 @@ class _AddChatScreenState extends State<AddChatScreen> {
             UserCard(
               user: user,
               onTap: _addChatController.newChat,
+              // onTap: () {
+              //   Navigator.of(context).pushNamed(ContactScreen.routeName);
+              // },
             ),
             const SizedBox(
               height: 5,

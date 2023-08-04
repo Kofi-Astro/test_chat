@@ -23,7 +23,7 @@ class HomeController extends StateControl {
     init();
   }
 
-  ChatRepository _chatRepository = ChatRepository();
+  final ChatRepository _chatRepository = ChatRepository();
   IO.Socket socket = SocketController.socket;
   late ChatsProvider _chatsProvider;
 
@@ -70,7 +70,7 @@ class HomeController extends StateControl {
 
       // int chatIndex = _chats.indexWhere((_chat) => _chat.id == chat.id);
 
-      int chatIndex = chats.indexWhere((_chat) => _chat.id == chat.id);
+      int chatIndex = chats.indexWhere((chat) => chat.id == chat.id);
       List<Chat> newChats = List<Chat>.from(chats);
 
       if (chatIndex > -1) {
@@ -83,12 +83,10 @@ class HomeController extends StateControl {
       }
 
       _chatsProvider.setChats(newChats);
-      if (_chatsProvider.selectedChat != null) {
-        _chatsProvider.chats.forEach((chat) {
-          if (chat.id == _chatsProvider.selectedChat.id) {
-            _chatsProvider.setSelectedChat(chat);
-          }
-        });
+      for (var chat in _chatsProvider.chats) {
+        if (chat.id == _chatsProvider.selectedChat.id) {
+          _chatsProvider.setSelectedChat(chat);
+        }
       }
       // notifyListeners();
       _chatsProvider.setChats(newChats);
@@ -126,9 +124,9 @@ class HomeController extends StateControl {
   }
 
   int calculateChatsWithMessages() {
-    print('calling ${chats.where((chat) => chat.messages!.length > 0).length}');
+    print('calling ${chats.where((chat) => chat.messages!.isNotEmpty).length}');
 
-    return chats.where((chat) => chat.messages!.length > 0).length;
+    return chats.where((chat) => chat.messages!.isNotEmpty).length;
   }
 
   Future<User> getUserFromSharedPreferences() async {

@@ -3,13 +3,12 @@ import 'package:test_chat/repositories/chat_repository.dart';
 
 import '../../models/chat.dart';
 import '../../models/message.dart';
-import '../../data/providers/chats_provider.dart';
 
 class ChatsProvider with ChangeNotifier {
   List<Chat> _chats = [];
   List<Chat> get chats => _chats;
 
-  ChatRepository _chatRepository = ChatRepository();
+  final ChatRepository _chatRepository = ChatRepository();
 
   late Chat _selectedChat;
 
@@ -38,11 +37,9 @@ class ChatsProvider with ChangeNotifier {
   setSelectedChat(Chat selectedChat) {
     _selectedChat = selectedChat;
 
-    if (_selectedChat != null) {
-      _readSelectedChatMessages();
-      _chatRepository.readChat(_selectedChat.id!);
-      notifyListeners();
-    }
+    _readSelectedChatMessages();
+    _chatRepository.readChat(_selectedChat.id!);
+    notifyListeners();
   }
 
   _readSelectedChatMessages() {

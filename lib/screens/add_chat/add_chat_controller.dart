@@ -19,8 +19,8 @@ class AddChatController extends StateControl {
     init();
   }
 
-  UserRepository _userRepository = UserRepository();
-  ChatRepository _chatRepository = ChatRepository();
+  final UserRepository _userRepository = UserRepository();
+  final ChatRepository _chatRepository = ChatRepository();
 
   bool _loading = true;
   bool get loading => _loading;
@@ -53,10 +53,10 @@ class AddChatController extends StateControl {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   void newChat(User user) async {
     _showProgressDialog();
@@ -70,10 +70,6 @@ class AddChatController extends StateControl {
     if (response is Chat) {
       await _dismissProgressDialog();
       _chat = await response.formatChat();
-      // Navigator.of(context).pushNamed(ContactScreen.routeName,
-      //     arguments: ContactScreen(
-      //       chat: _chat,
-      //     ));
 
       ChatsProvider _chatsProvider =
           Provider.of<ChatsProvider>(context, listen: false);
@@ -82,7 +78,7 @@ class AddChatController extends StateControl {
           _chatsProvider.chats.indexWhere((chat) => chat.id == _chat.id) > -1;
       if (!findChatIndex) {
         print('Enter to begin chat');
-        List<Chat> newChats = new List<Chat>.from(_chatsProvider.chats);
+        List<Chat> newChats = List<Chat>.from(_chatsProvider.chats);
         newChats.add(_chat);
         _chatsProvider.setChats(newChats);
       } else {
@@ -105,14 +101,14 @@ class AddChatController extends StateControl {
         message: 'Loading...',
         borderRadius: 10.0,
         backgroundColor: Colors.white,
-        progressWidget: CupertinoActivityIndicator(),
+        progressWidget: const CupertinoActivityIndicator(),
         elevation: 10.0,
         insetAnimCurve: Curves.easeInOut,
         progress: 0.0,
         maxProgress: 100.0,
-        progressTextStyle: TextStyle(
+        progressTextStyle: const TextStyle(
             color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-        messageTextStyle: TextStyle(
+        messageTextStyle: const TextStyle(
             color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600));
     _progressDialog.show();
   }

@@ -30,7 +30,7 @@ class RegisterRepository {
       final User user = User.fromJson(registerResponse['user']);
       return user;
     } catch (error) {
-      throw error;
+      rethrow;
     }
   }
 }

@@ -5,7 +5,6 @@ import '../../models/user.dart';
 import '../../models/custom_error.dart';
 import '../../repositories/login_repository.dart';
 import '../home/home.dart';
-import '../../utils/custom_shared_preferences.dart';
 import '../../utils/state_control.dart';
 
 class LoginController extends StateControl {

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../data/providers/chats_provider.dart';
 
 import '../../repositories/chat_repository.dart';
-import '../../utils/socket_controller.dart';
 import '../../utils/state_control.dart';
 
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -27,7 +26,7 @@ class ContactController extends StateControl {
   TextEditingController textEditingController = TextEditingController();
 
   // IO.Socket socket = SocketController.socket;
-  ChatRepository _chatRepository = ChatRepository();
+  final ChatRepository _chatRepository = ChatRepository();
 
   final bool _error = false;
   bool get error => _error;
