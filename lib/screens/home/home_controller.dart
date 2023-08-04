@@ -76,6 +76,7 @@ class HomeController extends StateControl {
       if (chatIndex > -1) {
         // _chats[chatIndex].messages = chat.messages;
         newChats[chatIndex].messages = chat.messages;
+        newChats[chatIndex] = await newChats[chatIndex].formatChat();
       } else {
         // _chats.add(await chat.formatChat());
         newChats.add(await chat.formatChat());

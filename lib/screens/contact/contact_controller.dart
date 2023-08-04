@@ -62,6 +62,8 @@ class ContactController extends StateControl {
       text: text,
       userId: chat.myUser!.id,
       createdAt: DateTime.now().millisecondsSinceEpoch,
+      unreadByMe: false,
+      unreadByOtherUser: true,
     );
     print(message);
     addMessage(message);
@@ -85,6 +87,7 @@ class ContactController extends StateControl {
   void dispose() {
     super.dispose();
     textEditingController.dispose();
+    // _chatsProvider.setSelectedChat(null);
     // disconnectSocket();
   }
 }

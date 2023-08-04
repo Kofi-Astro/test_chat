@@ -86,7 +86,7 @@ class AddChatController extends StateControl {
         newChats.add(_chat);
         _chatsProvider.setChats(newChats);
       } else {
-        print('Can\t access chat');
+        print('Can\'t access chat');
       }
 
       _chatsProvider.setSelectedChat(_chat);

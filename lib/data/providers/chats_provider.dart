@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:test_chat/repositories/chat_repository.dart';
 
 import '../../models/chat.dart';
 import '../../models/message.dart';
+import '../../data/providers/chats_provider.dart';
 
 class ChatsProvider with ChangeNotifier {
   List<Chat> _chats = [];
-
   List<Chat> get chats => _chats;
+
+  ChatRepository _chatRepository = ChatRepository();
 
   late Chat _selectedChat;
 
@@ -34,11 +37,35 @@ class ChatsProvider with ChangeNotifier {
 
   setSelectedChat(Chat selectedChat) {
     _selectedChat = selectedChat;
-    notifyListeners();
+
+    if (_selectedChat != null) {
+      _readSelectedChatMessages();
+      _chatRepository.readChat(_selectedChat.id!);
+      notifyListeners();
+    }
+  }
+
+  _readSelectedChatMessages() {
+    _selectedChat.messages = _selectedChat.messages?.map((message) {
+      message.unreadByMe = false;
+      return message;
+    }).toList();
+    updateSelectedChatInChats();
   }
 
   addMessageToSelectedChat(Message message) {
     _selectedChat.messages?.add(message);
-    setChats(_chats);
+    // setChats(_chats);
+    updateSelectedChatInChats();
+  }
+
+  updateSelectedChatInChats() {
+    List<Chat> newChats = _chats.map((chat) {
+      if (chat.id == _selectedChat.id!) {
+        chat = _selectedChat;
+      }
+      return chat;
+    }).toList();
+    setChats(newChats);
   }
 }

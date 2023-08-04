@@ -132,4 +132,30 @@ class ChatCard extends StatelessWidget {
     DateTime date = new DateTime.fromMillisecondsSinceEpoch(milliseconds);
     return format.format(date);
   }
+
+  int? _numberOfUnreadMessagesByMe() {
+    return chat.messages?.where((message) => message.unreadByMe!).length;
+  }
+
+  Widget unreadMessages() {
+    final _unreadMessages = _numberOfUnreadMessagesByMe();
+    if (_unreadMessages == 0) {
+      return Container(
+        width: 0,
+        height: 0,
+      );
+    }
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+      color: Colors.blue,
+      child: Text(
+        _unreadMessages.toString(),
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
 }
