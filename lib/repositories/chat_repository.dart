@@ -44,8 +44,7 @@ class ChatRepository {
 
       // print(response.body);
 
-      final dynamic chatResponse = jsonDecode(response.body);
-      //['chat'];
+      final dynamic chatResponse = jsonDecode(response.body)['chat'];
 
       // print(chatResponse);
       final Chat chat = Chat.fromJson(chatResponse);

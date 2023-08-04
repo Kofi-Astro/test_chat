@@ -20,20 +20,30 @@ class Chat {
     required this.messages,
   });
 
-  Chat.fromJson(Map<String, dynamic> json) {
-    // final chat = Chat(
-    //     id: json['_id'],
-    //     lowerIdUser: User.fromJson(json['lowerId']),
-    //     higherIdUser: User.fromJson(json['higherId']),
-    //     messages: json['messages']);
+  // Chat.fromJson(Map<String, dynamic> json) {
+  //   // final chat = Chat(
+  //   //     id: json['_id'],
+  //   //     lowerIdUser: User.fromJson(json['lowerId']),
+  //   //     higherIdUser: User.fromJson(json['higherId']),
+  //   //     messages: json['messages']);
 
+  //   id = json['_id'];
+  //   lowerIdUser = User.fromJson(json['lowerId']);
+  //   higherIdUser = User.fromJson(json['higherId']);
+  //   List<dynamic> messages = json['messages'];
+  //   messages = messages.map((message) => Message.fromJson(message)).toList();
+
+  //   // return chat;
+  // }
+
+  Chat.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     lowerIdUser = User.fromJson(json['lowerId']);
     higherIdUser = User.fromJson(json['higherId']);
-    List<dynamic> messages = json['messages'];
-    messages = messages.map((message) => Message.fromJson(message)).toList();
-
-    // return chat;
+    List<dynamic> messagesJson =
+        json['messages']; // Store the parsed JSON list in a variable
+    messages =
+        messagesJson.map((message) => Message.fromJson(message)).toList();
   }
 
   Map<String, dynamic> toJson() {

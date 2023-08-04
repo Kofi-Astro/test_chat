@@ -40,6 +40,7 @@ class AddChatController extends StateControl {
   }
 
   void getUsers() async {
+    // _dismissProgressDialog();
     dynamic response = await _userRepository.getUsers();
 
     if (response is CustomError) {
@@ -58,17 +59,52 @@ class AddChatController extends StateControl {
   //   super.dispose();
   // }
 
+  // void newChat(User user) async {
+  //   _showProgressDialog();
+
+  //   dynamic response = await _chatRepository.getChatByUsersId(user.id!);
+
+  //   // print('This is the response: $response');
+
+  //   await _dismissProgressDialog();
+  //   if (response is CustomError) {
+  //     _error = true;
+  //   }
+  //   if (response is Chat) {
+  //     _chat = await response.formatChat();
+
+  //     ChatsProvider _chatsProvider =
+  //         Provider.of<ChatsProvider>(context, listen: false);
+
+  //     bool findChatIndex =
+  //         _chatsProvider.chats.indexWhere((chat) => chat.id == _chat.id) > -1;
+  //     if (!findChatIndex) {
+  //       print('Enter to begin chat');
+  //       List<Chat> newChats = List<Chat>.from(_chatsProvider.chats);
+  //       newChats.add(_chat);
+  //       _chatsProvider.setChats(newChats);
+  //     } else {
+  //       print('Can\'t access chat');
+  //     }
+
+  //     _chatsProvider.setSelectedChat(_chat);
+  //     Navigator.of(context).pushNamed(ContactScreen.routeName);
+  //   }
+
+  //   await _dismissProgressDialog();
+  //   _loading = false;
+  //   notifyListeners();
+  // }
   void newChat(User user) async {
     _showProgressDialog();
 
     dynamic response = await _chatRepository.getChatByUsersId(user.id!);
 
+    await _dismissProgressDialog(); // Move this line outside of condition blocks
+
     if (response is CustomError) {
-      await _dismissProgressDialog();
       _error = true;
-    }
-    if (response is Chat) {
-      await _dismissProgressDialog();
+    } else if (response is Chat) {
       _chat = await response.formatChat();
 
       ChatsProvider _chatsProvider =
@@ -77,8 +113,9 @@ class AddChatController extends StateControl {
       bool findChatIndex =
           _chatsProvider.chats.indexWhere((chat) => chat.id == _chat.id) > -1;
       if (!findChatIndex) {
-        print('Enter to begin chat');
+        // print('Enter to begin chat');
         List<Chat> newChats = List<Chat>.from(_chatsProvider.chats);
+        print('This is the newChat: $newChats');
         newChats.add(_chat);
         _chatsProvider.setChats(newChats);
       } else {
@@ -89,7 +126,6 @@ class AddChatController extends StateControl {
       Navigator.of(context).pushNamed(ContactScreen.routeName);
     }
 
-    await _dismissProgressDialog();
     _loading = false;
     notifyListeners();
   }

@@ -64,7 +64,7 @@ class ContactController extends StateControl {
       unreadByMe: false,
       unreadByOtherUser: true,
     );
-    print(message);
+    // print(message);
     addMessage(message);
   }
 
@@ -72,7 +72,7 @@ class ContactController extends StateControl {
     // print(message.userId);
     // chat.messages!.add(message);
     // notifyListeners();
-
+    print(message);
     _chatsProvider.addMessageToSelectedChat(message);
   }
 

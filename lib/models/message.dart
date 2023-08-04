@@ -18,21 +18,30 @@ class Message {
       this.unreadByMe,
       this.unreadByOtherUser});
 
+  // Message.fromJson(Map<String, dynamic> json) {
+  //   print("jsonMessage = $json");
+  //   id = json['_id'];
+  //   userId = json['userId'];
+  //   text = json['text'];
+  //   createdAt = json['createdAt'];
+  //   unreadByHigherIdUser = json['unreadByHigherIdUser'] ?? false;
+  //   unreadByLowerIdUser = json['unreadByLowerIdUser'] ?? false;
+  //   unreadByMe = json['unreadByMe'] ?? true;
+  //   unreadByOtherUser = json['unreadByOtherUser'] ?? false;
+  // }
+
   Message.fromJson(Map<String, dynamic> json) {
     print("jsonMessage = $json");
     id = json['_id'];
     userId = json['userId'];
     text = json['text'];
-    createdAt = json['createdAt'];
+    createdAt =
+        json['createdAt'] as int?; // Handle the case when createdAt is null
     unreadByHigherIdUser = json['unreadByHigherIdUser'] ?? false;
     unreadByLowerIdUser = json['unreadByLowerIdUser'] ?? false;
     unreadByMe = json['unreadByMe'] ?? true;
     unreadByOtherUser = json['unreadByOtherUser'] ?? false;
   }
-
-  // factory Message.fromJson(Map<String, dynamic> json) {
-  //   var message = Message(id: );
-  // }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {};

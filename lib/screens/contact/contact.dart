@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './contact_controller.dart';
@@ -6,10 +7,8 @@ import '../../models/chat.dart';
 class ContactScreen extends StatefulWidget {
   static const String routeName = '/contact';
 
-  // final Chat chat;
   const ContactScreen({
     super.key,
-    // required this.chat,
   });
 
   @override
@@ -25,7 +24,6 @@ class _ContactScreenState extends State<ContactScreen> {
 
     _contactController = ContactController(
       context: context,
-      // chat: widget.chat,
     );
   }
 
@@ -48,20 +46,29 @@ class _ContactScreenState extends State<ContactScreen> {
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: const Color(0xffeeeeeeee),
-            appBar: AppBar(
-                title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _contactController.chat.otherUser!.username!,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
+            // appBar: AppBar(
+            //     title: Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       _contactController.chat.otherUser!.username!,
+            //       style: const TextStyle(
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     renderOnline(),
+            //   ],
+            // )),
+            appBar: CupertinoNavigationBar(
+              middle: Text(
+                _contactController.chat.otherUser!.username!,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                renderOnline(),
-              ],
-            )),
+              ),
+              backgroundColor: Color(0Xfff8f8f8),
+            ),
             body: SafeArea(
                 child: Container(
               child: Column(children: [
@@ -151,7 +158,8 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget renderMessages(BuildContext context) {
     if (_contactController.chat.messages == null) {
       // Return a loading indicator or empty widget if messages is null
-      return Container();
+      // return Container();
+      return Placeholder();
     }
     return Column(
       children: _contactController.chat.messages!.map((message) {

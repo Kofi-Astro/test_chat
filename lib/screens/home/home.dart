@@ -68,12 +68,71 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+  // Widget usersList(BuildContext context) {
+  //   if (_homeController.loading) {
+  //     // return const Center(
+  //     //   child: CupertinoActivityIndicator(),
+  //     // );
+
+  //     return const SliverFillRemaining(
+  //       child: Center(child: CupertinoActivityIndicator()),
+  //     );
+  //   }
+
+  //   if (_homeController.error) {
+  //     return const SliverFillRemaining(
+  //       child: Center(child: Text('Error occured fetched chats')),
+  //     );
+  //   }
+
+  //   if (_homeController.chats.isEmpty) {
+  //     return const SliverFillRemaining(
+  //       child: Center(child: Text('No chats exist')),
+  //     );
+  //   }
+
+  //   bool chatsWithMessages = _homeController.chats.where((chat) {
+  //     return chat.messages?.isNotEmpty ?? false;
+  //   }).isNotEmpty;
+
+  //   if (!chatsWithMessages) {
+  //     return const SliverFillRemaining(
+  //       child: Center(
+  //         child: Text('No chat exist'),
+  //       ),
+  //     );
+  //   }
+
+  //   return SliverPadding(
+  //     padding: const EdgeInsets.symmetric(vertical: 10),
+  //     sliver: SliverList(
+  //         delegate:
+  //             SliverChildBuilderDelegate((BuildContext context, int index) {
+  //       return Column(
+  //         children: _homeController.chats.map((chat) {
+  //           if (chat.messages!.isEmpty) {
+  //             return const SizedBox(
+  //               height: 0,
+  //               width: 0,
+  //             );
+  //           }
+  //           return Column(
+  //             children: [
+  //               ChatCard(chat: chat),
+  //               const SizedBox(
+  //                 height: 5,
+  //               ),
+  //             ],
+  //           );
+  //         }).toList(),
+  //       );
+  //     }, childCount: 1)),
+  //   );
+
+  // }
+
   Widget usersList(BuildContext context) {
     if (_homeController.loading) {
-      // return const Center(
-      //   child: CupertinoActivityIndicator(),
-      // );
-
       return const SliverFillRemaining(
         child: Center(child: CupertinoActivityIndicator()),
       );
@@ -81,53 +140,70 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (_homeController.error) {
       return const SliverFillRemaining(
-        child: Center(child: Text('Error occured fetched chats')),
+        child: Center(child: Text('Error occurred while fetching chats')),
       );
     }
 
-    if (_homeController.chats.isEmpty) {
-      return const SliverFillRemaining(
-        child: Center(child: Text('No chats exist')),
-      );
-    }
-
-    bool chatsWithMessages = _homeController.chats.where((chat) {
+    bool chatsWithMessages = _homeController.chats.any((chat) {
       return chat.messages?.isNotEmpty ?? false;
-    }).isNotEmpty;
+    });
 
     if (!chatsWithMessages) {
       return const SliverFillRemaining(
-        child: Center(
-          child: Text('No chat exist'),
-        ),
+        child: Center(child: Text('No chats exist')),
       );
     }
 
     return SliverPadding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       sliver: SliverList(
-          delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Column(
-          children: _homeController.chats.map((chat) {
-            if (chat.messages!.isEmpty) {
-              return const SizedBox(
-                height: 0,
-                width: 0,
-              );
-            }
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
             return Column(
-              children: [
-                ChatCard(chat: chat),
-                const SizedBox(
-                  height: 5,
-                ),
-              ],
+              children: _homeController.chats.map((chat) {
+                if (chat.messages!.isEmpty) {
+                  return const SizedBox(
+                    height: 0,
+                    width: 0,
+                  );
+                }
+                return Column(
+                  children: [
+                    ChatCard(chat: chat),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
-      }, childCount: 1)),
+          },
+          childCount: 1,
+        ),
+      ),
     );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // return ListView(
     //   padding: const EdgeInsets.symmetric(
@@ -152,5 +228,3 @@ class _HomeScreenState extends State<HomeScreen> {
     //     );
     //   }).toList(),
     // );
-  }
-}
