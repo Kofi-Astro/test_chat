@@ -122,7 +122,7 @@ class AddChatController extends StateControl {
         print('Can\'t access chat');
       }
 
-      _chatsProvider.setSelectedChat(_chat);
+      _chatsProvider.setSelectedChat(_chat.id!);
       Navigator.of(context).pushNamed(ContactScreen.routeName);
     }
 

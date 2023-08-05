@@ -29,7 +29,7 @@ class ChatCard extends StatelessWidget {
 
         ChatsProvider chatsProvider =
             Provider.of<ChatsProvider>(context, listen: false);
-        chatsProvider.setSelectedChat(chat);
+        chatsProvider.setSelectedChat(chat.id!);
         Navigator.of(context).pushNamed(ContactScreen.routeName);
       },
       child: Container(

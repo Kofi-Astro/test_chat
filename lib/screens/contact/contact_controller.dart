@@ -14,7 +14,8 @@ class ContactController extends StateControl {
 
   // Chat chat;
   late ChatsProvider _chatsProvider;
-  Chat get chat => _chatsProvider.selectedChat;
+  late Chat chat;
+  // Chat get chat => _chatsProvider.selectedChat;
 
   ContactController({
     required this.context,
@@ -47,11 +48,14 @@ class ContactController extends StateControl {
   }
   void initProvider() {
     _chatsProvider = Provider.of<ChatsProvider>(context);
+    chat = _chatsProvider.chats
+        .firstWhere((chat) => chat.id == _chatsProvider.selectedChatId);
   }
   // }
 
   void sendMessage() {
     String text = textEditingController.text;
+    if (text.length == 0) return;
     _chatRepository.sendMessage(chat.id!, text);
     // addMessage(text);
     textEditingController.text = '';
@@ -86,7 +90,7 @@ class ContactController extends StateControl {
   void dispose() {
     super.dispose();
     textEditingController.dispose();
-    // _chatsProvider.setSelectedChat(null);
+    _chatsProvider.setSelectedChat('');
     // disconnectSocket();
   }
 }

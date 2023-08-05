@@ -83,11 +83,20 @@ class HomeController extends StateControl {
       }
 
       _chatsProvider.setChats(newChats);
-      for (var chat in _chatsProvider.chats) {
-        if (chat.id == _chatsProvider.selectedChat.id) {
-          _chatsProvider.setSelectedChat(chat);
-        }
+      if (_chatsProvider.selectedChatId != null) {
+        _chatsProvider.chats.forEach((chat) {
+          if (chat.id == _chatsProvider.selectedChatId) {
+            _chatsProvider.setSelectedChat(chat.id!);
+            return;
+          }
+        });
       }
+
+      // for (var chat in _chatsProvider.chats) {
+      //   if (chat.id == _chatsProvider.selectedChat.id) {
+      //     _chatsProvider.setSelectedChat(chat);
+      //   }
+      // }
       // notifyListeners();
       _chatsProvider.setChats(newChats);
     });

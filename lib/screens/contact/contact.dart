@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../data/providers/chats_provider.dart';
 
 import './contact_controller.dart';
 import '../../models/chat.dart';
+import '../../models/message.dart';
 
 class ContactScreen extends StatefulWidget {
   static const String routeName = '/contact';
@@ -73,18 +76,24 @@ class _ContactScreenState extends State<ContactScreen> {
                 child: Container(
               child: Column(children: [
                 Expanded(
-                  child: ListView(
-                    reverse: true,
-                    children: [
-                      Padding(
+                  child: ListView.builder(
+                    // reverse: true,
+                    itemCount: _contactController.chat.messages!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final reverseIndex =
+                          _contactController.chat.messages!.length - 1 - index;
+                      return Padding(
                         padding: const EdgeInsets.only(
                           left: 15,
                           right: 15,
                           top: 5,
                         ),
-                        child: renderMessages(context),
-                      )
-                    ],
+                        child: renderMessages(
+                            context,
+                            // _contactController.chat.messages![reverseIndex]
+                            _contactController.chat.messages![index]),
+                      );
+                    },
                   ),
                 ),
                 Material(
@@ -155,69 +164,61 @@ class _ContactScreenState extends State<ContactScreen> {
         });
   }
 
-  Widget renderMessages(BuildContext context) {
-    if (_contactController.chat.messages == null) {
-      // Return a loading indicator or empty widget if messages is null
-      // return Container();
-      return Placeholder();
-    }
+  Widget renderMessages(BuildContext context, Message message) {
     return Column(
-      children: _contactController.chat.messages!.map((message) {
-        return Column(
-          children: [
-            Material(
-              color: Colors.transparent,
-              child: Align(
-                alignment: message.userId == _contactController.chat.myUser!.id
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: Container(
-                  constraints: BoxConstraints(
-                      maxWidth: MediaQuery.of(context).size.width * 0.75),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 2,
-                    ),
-                    color: message.userId == _contactController.chat.myUser!.id
-                        ? const Color(0xFFC0CBFF)
-                        : Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      child: Text(
-                        message.text!,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.5,
-                        ),
-                      ),
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: Align(
+            alignment: message.userId == _contactController.chat.myUser!.id
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: Container(
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.75),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Card(
+                margin: const EdgeInsets.symmetric(
+                  vertical: 2,
+                ),
+                color: message.userId == _contactController.chat.myUser!.id
+                    ? const Color(0xFFC0CBFF)
+                    : Colors.white,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  child: Text(
+                    message.text!,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.5,
                     ),
                   ),
                 ),
               ),
             ),
-          ],
-        );
-      }).toList(),
-    );
-  }
-
-  Widget renderOnline() {
-    // if (_contactController!.chatOnlineInMyChat) {
-    //   return const Text(
-    //     'online in your conversation',
-    //     style: TextStyle(
-    //         fontSize: 12,
-    //         fontWeight: FontWeight.bold,
-    //         color: Colors.greenAccent),
-    //   );
-    // }
-    return const SizedBox(
-      width: 0,
-      height: 0,
+          ),
+        ),
+      ],
     );
   }
 }
+
+  // Widget renderOnline() {
+  //   // if (_contactController!.chatOnlineInMyChat) {
+  //   //   return const Text(
+  //   //     'online in your conversation',
+  //   //     style: TextStyle(
+  //   //         fontSize: 12,
+  //   //         fontWeight: FontWeight.bold,
+  //   //         color: Colors.greenAccent),
+  //   //   );
+  //   // }
+  //   return const SizedBox(
+  //     width: 0,
+  //     height: 0,
+  //   );
+  // }
+
